@@ -94,11 +94,9 @@ def browseLessonsByLessonId(course_id:int,cookies:dict) -> tuple:
     if not lesson_list:
         logger.error("The lessonlist is missing, please update the xpath expression to the lessonlist !!!\n")
         sys.exit()  
-    isBrowsed = lambda element: 0 if "已完成" in element.xpath('div[@class="actions-right"]/span/span/img/@alt')[0] else 1
-   
-    
 
-    filtered_list = list(filter(isBrowsed,lesson_list))  
+    needBrowse = lambda element: 0 if len(element.xpath('div[@class="actions-right"]/span/span/img/@alt'))<=0 or "已完成" in element.xpath('div[@class="actions-right"]/span/span/img/@alt')[0] else 1
+    filtered_list = list(filter(needBrowse,lesson_list))  
 
     getName = lambda element: element.xpath('div/a/span/text()')[0]
     lesson_name_list = list(map(getName,filtered_list))
